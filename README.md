@@ -1,7 +1,7 @@
 ## CNN-Kaggle-Pratice   
       
       
-### DataSet URL:      
+### DataSet URL :      
       
       
 Bees_Wasps_Insect_Other Kaggle's DataSet : [Bee or wasp?](https://www.kaggle.com/jerzydziewierz/bee-vs-wasp)     
