@@ -150,6 +150,7 @@ Epoch 41/300
 10. Use **final_validation dataframe**  for final check to make a **Confusion_Matrix**
 
 !["預測" = "Prediction" ; "真實" = "Real"](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/Bees_Wasps_Insect_Other/Picture/Confusion_Matrix.jpg)
+
 ps : "預測" = "Prediction" ; "真實" = "Real"
 
 11. Search relate picture URL and test this model's accuracy
