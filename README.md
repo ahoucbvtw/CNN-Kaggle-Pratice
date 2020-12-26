@@ -9,15 +9,15 @@ Intel Kaggle's DataSet : [Intel Image Classification](https://www.kaggle.com/pun
 
 ***
 ### Bees_Wasps_Insect_Other Step Description
-1. Unzip dataset and load ==**labels.csv**==
+1. Unzip dataset and load **labels.csv**
 
 ![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/Bees_Wasps_Insect_Other/Picture/ReadCSV.jpg )
 
-2. Use ==**labels.csv**== to  make a ==**final_validation dataframe**==, and this dataframe is used to make a **Confusion_Matrix** in the final.
+2. Use **labels.csv** to  make a **final_validation dataframe**, and this dataframe is used to make a **Confusion_Matrix** in the final.
 
 ![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/Bees_Wasps_Insect_Other/Picture/Final_validationDF.jpg )
 
-3. Use ==**labels.csv**== to  make a ==**train_df**==, and this dataframe is used for our training.
+3. Use **labels.csv** to  make a **train_df**, and this dataframe is used for our training.
 
 ![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/Bees_Wasps_Insect_Other/Picture/Train_DF.jpg )
 
@@ -27,7 +27,7 @@ from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(train_df["path"], train_df["answer"], test_size = 0.1, random_state = 5566)
 ```
 
-5. Make the folders for Training and Final_Validation, and move the pictures to these folders according to ==**final_validation dataframe**== and ==**train_df**==
+5. Make the folders for Training and Final_Validation, and move the pictures to these folders according to **final_validation dataframe** and **train_df**
 
 6. Use Generate to preprocess images.
 ```
@@ -147,7 +147,7 @@ Epoch 41/300
 
 ![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/Bees_Wasps_Insect_Other/Picture/Training%20%26%20Validation%20Accuracy.png)
 
-10. Use ==**final_validation dataframe**==  for final check to make a ==**Confusion_Matrix**==
+10. Use **final_validation dataframe**  for final check to make a **Confusion_Matrix**
 
 !["預測" = "Prediction" ; "真實" = "Real"](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/Bees_Wasps_Insect_Other/Picture/Confusion_Matrix.jpg)
 ps : "預測" = "Prediction" ; "真實" = "Real"
