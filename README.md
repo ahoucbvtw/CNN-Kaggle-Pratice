@@ -4,7 +4,7 @@
 
 [Bees_Wasps_Insect_Other Step Description](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice#bees_wasps_insect_other-step-description)
 
-[HandGesture_Recognition Step Description](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice#handgesture-recognition-step-description)
+[HandGesture_Recognition Step Description](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice#handgesture_recognition-step-description)
 
 *** 
 ### DataSet URL :
