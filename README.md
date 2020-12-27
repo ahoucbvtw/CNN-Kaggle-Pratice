@@ -1,8 +1,10 @@
 ## CNN-Kaggle-Pratice
-
+*** 
 ### List
 
-[Bees_Wasps_Insect_Other Step Description](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice#bees_wasps_insect_other-step-description)     
+[Bees_Wasps_Insect_Other Step Description](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice#bees_wasps_insect_other-step-description)
+
+[HandGesture_Recognition Step Description](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice#handgesture-recognition-step-description)
 
 *** 
 ### DataSet URL :
@@ -161,3 +163,213 @@ ps : "預測" = "Prediction" ; "真實" = "Real"
 
 ![](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice/blob/main/Bees_Wasps_Insect_Other/Picture/URL_Test.jpg?raw=true)
 ***
+### HandGesture_Recognition Step Description
+1. Unzip dataset
+
+2. Make new training+testing folders and move pictures to these folders
+
+3. Use **train_test_split** to separate final validation pictures. Each answer about 100 pictures.
+4. make and move new folders for **final validation pictures**. And according to new path to make **final_df** 
+
+![](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/HandGesture_Recognition/Picture/Final%20DataFrame.jpg)
+
+5. Use Generate to preprocess images
+```
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+train_datagen = ImageDataGenerator(rescale = 1./255,
+                                   horizontal_flip = True,
+                                   vertical_flip = True,
+                                   zoom_range = 0.2,
+                                   rotation_range = 30,
+                                   width_shift_range = 0.2,
+                                   height_shift_range = 0.2,
+                                   fill_mode = "nearest")
+
+test_datagen = ImageDataGenerator(rescale = 1./255)
+
+train_generator = train_datagen.flow_from_directory(
+        path_Train,
+        target_size = (250, 250),
+        batch_size = 30,
+        class_mode = 'categorical')
+
+test_generator = test_datagen.flow_from_directory(
+        path_Test,
+        target_size = (250, 250),
+        batch_size = 50,
+        class_mode = 'categorical')
+```
+6. Build CNN NetWork(self)
+```
+Model: "sequential_1"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_12 (Conv2D)           (None, 250, 250, 64)      1792      
+_________________________________________________________________
+conv2d_13 (Conv2D)           (None, 250, 250, 128)     73856     
+_________________________________________________________________
+batch_normalization_7 (Batch (None, 250, 250, 128)     512       
+_________________________________________________________________
+max_pooling2d_6 (MaxPooling2 (None, 125, 125, 128)     0         
+_________________________________________________________________
+conv2d_14 (Conv2D)           (None, 125, 125, 128)     147584    
+_________________________________________________________________
+conv2d_15 (Conv2D)           (None, 125, 125, 256)     295168    
+_________________________________________________________________
+batch_normalization_8 (Batch (None, 125, 125, 256)     1024      
+_________________________________________________________________
+max_pooling2d_7 (MaxPooling2 (None, 62, 62, 256)       0         
+_________________________________________________________________
+conv2d_16 (Conv2D)           (None, 62, 62, 256)       590080    
+_________________________________________________________________
+conv2d_17 (Conv2D)           (None, 62, 62, 512)       1180160   
+_________________________________________________________________
+batch_normalization_9 (Batch (None, 62, 62, 512)       2048      
+_________________________________________________________________
+max_pooling2d_8 (MaxPooling2 (None, 31, 31, 512)       0         
+_________________________________________________________________
+conv2d_18 (Conv2D)           (None, 31, 31, 512)       2359808   
+_________________________________________________________________
+conv2d_19 (Conv2D)           (None, 31, 31, 1024)      4719616   
+_________________________________________________________________
+batch_normalization_10 (Batc (None, 31, 31, 1024)      4096      
+_________________________________________________________________
+max_pooling2d_9 (MaxPooling2 (None, 15, 15, 1024)      0         
+_________________________________________________________________
+conv2d_20 (Conv2D)           (None, 15, 15, 1024)      9438208   
+_________________________________________________________________
+batch_normalization_11 (Batc (None, 15, 15, 1024)      4096      
+_________________________________________________________________
+max_pooling2d_10 (MaxPooling (None, 7, 7, 1024)        0         
+_________________________________________________________________
+conv2d_21 (Conv2D)           (None, 7, 7, 500)         4608500   
+_________________________________________________________________
+batch_normalization_12 (Batc (None, 7, 7, 500)         2000      
+_________________________________________________________________
+max_pooling2d_11 (MaxPooling (None, 3, 3, 500)         0         
+_________________________________________________________________
+conv2d_22 (Conv2D)           (None, 3, 3, 200)         900200    
+_________________________________________________________________
+conv2d_23 (Conv2D)           (None, 3, 3, 100)         180100    
+_________________________________________________________________
+batch_normalization_13 (Batc (None, 3, 3, 100)         400       
+_________________________________________________________________
+global_average_pooling2d_1 ( (None, 100)               0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 100)               0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 50)                5050      
+_________________________________________________________________
+dense_3 (Dense)              (None, 10)                510       
+=================================================================
+Total params: 24,514,808
+Trainable params: 24,507,720
+Non-trainable params: 7,088
+_________________________________________________________________
+```
+7. Training
+```
+Epoch 1/150
+WARNING:tensorflow:Callbacks method `on_train_batch_end` is slow compared to the batch time (batch time: 0.1186s vs `on_train_batch_end` time: 0.2565s). Check your callbacks.
+570/570 - 372s - loss: 1.3247 - accuracy: 0.5091 - val_loss: 5.3865 - val_accuracy: 0.1916
+Epoch 2/150
+570/570 - 359s - loss: 0.4325 - accuracy: 0.8557 - val_loss: 2.5981 - val_accuracy: 0.4526
+Epoch 3/150
+570/570 - 359s - loss: 0.2203 - accuracy: 0.9292 - val_loss: 0.6389 - val_accuracy: 0.7900
+Epoch 4/150
+570/570 - 360s - loss: 0.1375 - accuracy: 0.9582 - val_loss: 0.1359 - val_accuracy: 0.9511
+Epoch 5/150
+570/570 - 358s - loss: 0.1214 - accuracy: 0.9643 - val_loss: 0.6210 - val_accuracy: 0.8563
+Epoch 6/150
+570/570 - 359s - loss: 0.0943 - accuracy: 0.9714 - val_loss: 0.5880 - val_accuracy: 0.8479
+Epoch 7/150
+570/570 - 359s - loss: 0.0846 - accuracy: 0.9757 - val_loss: 1.1688 - val_accuracy: 0.6789
+Epoch 8/150
+570/570 - 361s - loss: 0.0802 - accuracy: 0.9757 - val_loss: 1.1788 - val_accuracy: 0.7695
+Epoch 9/150
+570/570 - 362s - loss: 0.0694 - accuracy: 0.9795 - val_loss: 0.0443 - val_accuracy: 0.9868
+Epoch 10/150
+570/570 - 360s - loss: 0.0578 - accuracy: 0.9833 - val_loss: 0.5593 - val_accuracy: 0.8705
+Epoch 11/150
+570/570 - 357s - loss: 0.0592 - accuracy: 0.9826 - val_loss: 1.8906 - val_accuracy: 0.7511
+Epoch 12/150
+570/570 - 359s - loss: 0.0442 - accuracy: 0.9877 - val_loss: 0.0729 - val_accuracy: 0.9726
+Epoch 13/150
+570/570 - 357s - loss: 0.0490 - accuracy: 0.9859 - val_loss: 0.3320 - val_accuracy: 0.9253
+Epoch 14/150
+570/570 - 359s - loss: 0.0435 - accuracy: 0.9871 - val_loss: 0.4850 - val_accuracy: 0.8942
+Epoch 15/150
+570/570 - 357s - loss: 0.0452 - accuracy: 0.9875 - val_loss: 3.4677 - val_accuracy: 0.4484
+Epoch 16/150
+570/570 - 362s - loss: 0.0368 - accuracy: 0.9891 - val_loss: 0.0083 - val_accuracy: 0.9989
+Epoch 17/150
+570/570 - 357s - loss: 0.0387 - accuracy: 0.9889 - val_loss: 0.9124 - val_accuracy: 0.8163
+Epoch 18/150
+570/570 - 360s - loss: 0.0379 - accuracy: 0.9898 - val_loss: 0.0117 - val_accuracy: 0.9979
+Epoch 19/150
+570/570 - 358s - loss: 0.0323 - accuracy: 0.9901 - val_loss: 3.1121 - val_accuracy: 0.5716
+Epoch 20/150
+570/570 - 359s - loss: 0.0292 - accuracy: 0.9917 - val_loss: 0.4636 - val_accuracy: 0.8958
+Epoch 21/150
+570/570 - 359s - loss: 0.0292 - accuracy: 0.9916 - val_loss: 0.2867 - val_accuracy: 0.9268
+Epoch 22/150
+570/570 - 362s - loss: 0.0256 - accuracy: 0.9934 - val_loss: 0.0025 - val_accuracy: 0.9995
+Epoch 23/150
+570/570 - 359s - loss: 0.0228 - accuracy: 0.9930 - val_loss: 0.0491 - val_accuracy: 0.9853
+Epoch 24/150
+570/570 - 359s - loss: 0.0237 - accuracy: 0.9936 - val_loss: 0.3088 - val_accuracy: 0.9195
+Epoch 25/150
+570/570 - 359s - loss: 0.0288 - accuracy: 0.9918 - val_loss: 0.0737 - val_accuracy: 0.9774
+Epoch 26/150
+570/570 - 358s - loss: 0.0247 - accuracy: 0.9937 - val_loss: 0.0034 - val_accuracy: 0.9989
+Epoch 27/150
+570/570 - 360s - loss: 0.0194 - accuracy: 0.9943 - val_loss: 0.0070 - val_accuracy: 0.9979
+Epoch 28/150
+570/570 - 358s - loss: 0.0258 - accuracy: 0.9929 - val_loss: 0.0031 - val_accuracy: 0.9984
+Epoch 29/150
+
+Epoch 00029: ReduceLROnPlateau reducing learning rate to 0.001.
+570/570 - 358s - loss: 0.0177 - accuracy: 0.9946 - val_loss: 0.0033 - val_accuracy: 0.9989
+Epoch 30/150
+570/570 - 354s - loss: 0.0172 - accuracy: 0.9946 - val_loss: 0.0247 - val_accuracy: 0.9942
+Epoch 31/150
+570/570 - 358s - loss: 0.0228 - accuracy: 0.9936 - val_loss: 6.9813e-04 - val_accuracy: 1.0000
+Epoch 32/150
+570/570 - 357s - loss: 0.0190 - accuracy: 0.9950 - val_loss: 1.3806e-04 - val_accuracy: 1.0000
+Epoch 33/150
+570/570 - 355s - loss: 0.0123 - accuracy: 0.9961 - val_loss: 0.0404 - val_accuracy: 0.9858
+Epoch 34/150
+570/570 - 354s - loss: 0.0152 - accuracy: 0.9961 - val_loss: 0.0403 - val_accuracy: 0.9884
+Epoch 35/150
+570/570 - 356s - loss: 0.0217 - accuracy: 0.9942 - val_loss: 0.3463 - val_accuracy: 0.9421
+Epoch 36/150
+570/570 - 357s - loss: 0.0192 - accuracy: 0.9951 - val_loss: 0.7558 - val_accuracy: 0.8758
+Epoch 37/150
+570/570 - 359s - loss: 0.0189 - accuracy: 0.9943 - val_loss: 0.1161 - val_accuracy: 0.9737
+Epoch 38/150
+
+Epoch 00038: ReduceLROnPlateau reducing learning rate to 0.001.
+570/570 - 358s - loss: 0.0192 - accuracy: 0.9947 - val_loss: 0.0065 - val_accuracy: 0.9979
+Epoch 39/150
+570/570 - 359s - loss: 0.0158 - accuracy: 0.9961 - val_loss: 0.0343 - val_accuracy: 0.9942
+Epoch 40/150
+570/570 - 357s - loss: 0.0123 - accuracy: 0.9967 - val_loss: 0.0228 - val_accuracy: 0.9947
+Epoch 41/150
+570/570 - 357s - loss: 0.0130 - accuracy: 0.9962 - val_loss: 0.0265 - val_accuracy: 0.9932
+Epoch 42/150
+570/570 - 357s - loss: 0.0175 - accuracy: 0.9951 - val_loss: 0.0016 - val_accuracy: 0.9995
+```
+8. Training & Validation accuracy
+
+![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/HandGesture_Recognition/Picture/Training%20%26%20Validation%20accuracy.png)
+
+9. Training & Validation loss
+
+![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/HandGesture_Recognition/Picture/Training%20%26%20Validation%20loss.png)
+
+10. Use **final_df** these new pictures to predict, to check model's accuracy, and make **Confusion_Matrix** 
+
+![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/HandGesture_Recognition/Picture/Confusion_Matrix.jpg)
+
+ps : "預測" = "Prediction" ; "真實" = "Real"
