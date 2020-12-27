@@ -6,6 +6,8 @@
 
 [HandGesture_Recognition Step Description](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice#handgesture_recognition-step-description)
 
+[Intel Step Description](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice#intel-step-description)
+
 *** 
 ### DataSet URL :
 
@@ -162,6 +164,9 @@ ps : "預測" = "Prediction" ; "真實" = "Real"
 11. Search relate picture URL and test this model's accuracy
 
 ![](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice/blob/main/Bees_Wasps_Insect_Other/Picture/URL_Test.jpg?raw=true)
+
+
+[Top](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice#cnn-kaggle-pratice)
 ***
 ### HandGesture_Recognition Step Description
 1. Unzip dataset
@@ -373,3 +378,224 @@ Epoch 42/150
 ![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/HandGesture_Recognition/Picture/Confusion_Matrix.jpg)
 
 ps : "預測" = "Prediction" ; "真實" = "Real"
+
+
+[Top](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice#cnn-kaggle-pratice)
+***
+### Intel Step Description
+1. Unzip dataset
+
+2. Because of pictures are all sorted, I can skip make folders and move pictures step, and use generate to preprocess images
+```
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+train_datagen = ImageDataGenerator(rescale = 1./255,
+                                   horizontal_flip = True,
+                                   vertical_flip = True,
+                                   zoom_range = 0.2,
+                                   rotation_range = 30,
+                                   width_shift_range = 0.2,
+                                   height_shift_range = 0.2,
+                                   fill_mode = "nearest")
+
+test_datagen = ImageDataGenerator(rescale = 1./255)
+
+train_generator = train_datagen.flow_from_directory(
+        path_Train,
+        target_size = (150, 150),
+        batch_size = 30,
+        class_mode = 'categorical')
+
+test_generator = test_datagen.flow_from_directory(
+        path_Test,
+        target_size = (150, 150),
+        batch_size = 50,
+        class_mode = 'categorical')
+```
+
+3. Build CNN NetWork(self)
+```
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d (Conv2D)              (None, 150, 150, 64)      1792      
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 150, 150, 128)     73856     
+_________________________________________________________________
+batch_normalization (BatchNo (None, 150, 150, 128)     512       
+_________________________________________________________________
+max_pooling2d (MaxPooling2D) (None, 75, 75, 128)       0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 75, 75, 128)       147584    
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 75, 75, 256)       295168    
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 75, 75, 256)       1024      
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 37, 37, 256)       0         
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 37, 37, 256)       590080    
+_________________________________________________________________
+conv2d_5 (Conv2D)            (None, 37, 37, 512)       1180160   
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 37, 37, 512)       2048      
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 18, 18, 512)       0         
+_________________________________________________________________
+conv2d_6 (Conv2D)            (None, 18, 18, 512)       2359808   
+_________________________________________________________________
+conv2d_7 (Conv2D)            (None, 18, 18, 1024)      4719616   
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 18, 18, 1024)      4096      
+_________________________________________________________________
+max_pooling2d_3 (MaxPooling2 (None, 9, 9, 1024)        0         
+_________________________________________________________________
+conv2d_8 (Conv2D)            (None, 9, 9, 1024)        9438208   
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 9, 9, 1024)        4096      
+_________________________________________________________________
+max_pooling2d_4 (MaxPooling2 (None, 4, 4, 1024)        0         
+_________________________________________________________________
+conv2d_9 (Conv2D)            (None, 4, 4, 500)         4608500   
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 4, 4, 500)         2000      
+_________________________________________________________________
+max_pooling2d_5 (MaxPooling2 (None, 2, 2, 500)         0         
+_________________________________________________________________
+conv2d_10 (Conv2D)           (None, 2, 2, 200)         900200    
+_________________________________________________________________
+conv2d_11 (Conv2D)           (None, 2, 2, 100)         180100    
+_________________________________________________________________
+batch_normalization_6 (Batch (None, 2, 2, 100)         400       
+_________________________________________________________________
+global_average_pooling2d (Gl (None, 100)               0         
+_________________________________________________________________
+dropout (Dropout)            (None, 100)               0         
+_________________________________________________________________
+dense (Dense)                (None, 50)                5050      
+_________________________________________________________________
+dense_1 (Dense)              (None, 6)                 306       
+=================================================================
+Total params: 24,514,604
+Trainable params: 24,507,516
+Non-trainable params: 7,088
+_________________________________________________________________
+```
+
+4. Training
+```
+Epoch 1/150
+468/468 - 155s - loss: 1.2804 - accuracy: 0.4781 - val_loss: 1.0291 - val_accuracy: 0.5563
+Epoch 2/150
+468/468 - 145s - loss: 1.0582 - accuracy: 0.5842 - val_loss: 1.3994 - val_accuracy: 0.5543
+Epoch 3/150
+468/468 - 148s - loss: 0.9331 - accuracy: 0.6489 - val_loss: 0.7039 - val_accuracy: 0.7420
+Epoch 4/150
+468/468 - 148s - loss: 0.8372 - accuracy: 0.6910 - val_loss: 1.0799 - val_accuracy: 0.6013
+Epoch 5/150
+468/468 - 147s - loss: 0.7693 - accuracy: 0.7211 - val_loss: 0.8618 - val_accuracy: 0.6807
+Epoch 6/150
+468/468 - 147s - loss: 0.7136 - accuracy: 0.7418 - val_loss: 0.9569 - val_accuracy: 0.6790
+Epoch 7/150
+468/468 - 147s - loss: 0.6868 - accuracy: 0.7520 - val_loss: 0.9223 - val_accuracy: 0.6707
+Epoch 8/150
+468/468 - 147s - loss: 0.6438 - accuracy: 0.7696 - val_loss: 0.7549 - val_accuracy: 0.7093
+Epoch 9/150
+468/468 - 147s - loss: 0.6330 - accuracy: 0.7752 - val_loss: 0.6453 - val_accuracy: 0.7773
+Epoch 10/150
+468/468 - 147s - loss: 0.5948 - accuracy: 0.7898 - val_loss: 0.5452 - val_accuracy: 0.7987
+Epoch 11/150
+468/468 - 148s - loss: 0.5825 - accuracy: 0.7919 - val_loss: 1.2776 - val_accuracy: 0.5897
+Epoch 12/150
+468/468 - 147s - loss: 0.5558 - accuracy: 0.8065 - val_loss: 0.5333 - val_accuracy: 0.8043
+Epoch 13/150
+468/468 - 147s - loss: 0.5428 - accuracy: 0.8101 - val_loss: 0.6207 - val_accuracy: 0.7783
+Epoch 14/150
+468/468 - 147s - loss: 0.5340 - accuracy: 0.8100 - val_loss: 0.4829 - val_accuracy: 0.8267
+Epoch 15/150
+468/468 - 147s - loss: 0.4998 - accuracy: 0.8241 - val_loss: 0.5028 - val_accuracy: 0.8273
+Epoch 16/150
+468/468 - 147s - loss: 0.4966 - accuracy: 0.8271 - val_loss: 0.8090 - val_accuracy: 0.6957
+Epoch 17/150
+468/468 - 147s - loss: 0.4844 - accuracy: 0.8300 - val_loss: 0.5222 - val_accuracy: 0.8173
+Epoch 18/150
+468/468 - 147s - loss: 0.4715 - accuracy: 0.8327 - val_loss: 0.4725 - val_accuracy: 0.8350
+Epoch 19/150
+468/468 - 147s - loss: 0.4523 - accuracy: 0.8393 - val_loss: 0.6628 - val_accuracy: 0.7733
+Epoch 20/150
+468/468 - 147s - loss: 0.4483 - accuracy: 0.8428 - val_loss: 0.7046 - val_accuracy: 0.7837
+Epoch 21/150
+468/468 - 147s - loss: 0.4285 - accuracy: 0.8495 - val_loss: 0.5825 - val_accuracy: 0.8003
+Epoch 22/150
+468/468 - 147s - loss: 0.4287 - accuracy: 0.8518 - val_loss: 0.9253 - val_accuracy: 0.7210
+Epoch 23/150
+468/468 - 147s - loss: 0.4161 - accuracy: 0.8546 - val_loss: 0.6175 - val_accuracy: 0.7873
+Epoch 24/150
+468/468 - 147s - loss: 0.4159 - accuracy: 0.8556 - val_loss: 0.6722 - val_accuracy: 0.7500
+Epoch 25/150
+468/468 - 147s - loss: 0.4125 - accuracy: 0.8573 - val_loss: 0.3815 - val_accuracy: 0.8663
+Epoch 26/150
+468/468 - 147s - loss: 0.4012 - accuracy: 0.8611 - val_loss: 0.4646 - val_accuracy: 0.8267
+Epoch 27/150
+468/468 - 147s - loss: 0.3844 - accuracy: 0.8668 - val_loss: 0.4152 - val_accuracy: 0.8537
+Epoch 28/150
+468/468 - 147s - loss: 0.3835 - accuracy: 0.8675 - val_loss: 0.5847 - val_accuracy: 0.7990
+Epoch 29/150
+468/468 - 147s - loss: 0.3852 - accuracy: 0.8671 - val_loss: 0.3727 - val_accuracy: 0.8727
+Epoch 30/150
+468/468 - 147s - loss: 0.3679 - accuracy: 0.8739 - val_loss: 0.5825 - val_accuracy: 0.8113
+Epoch 31/150
+468/468 - 147s - loss: 0.3674 - accuracy: 0.8708 - val_loss: 1.0878 - val_accuracy: 0.7000
+Epoch 32/150
+468/468 - 147s - loss: 0.3501 - accuracy: 0.8787 - val_loss: 0.5583 - val_accuracy: 0.8027
+Epoch 33/150
+468/468 - 147s - loss: 0.3502 - accuracy: 0.8785 - val_loss: 0.4249 - val_accuracy: 0.8557
+Epoch 34/150
+468/468 - 147s - loss: 0.3542 - accuracy: 0.8752 - val_loss: 0.3919 - val_accuracy: 0.8537
+Epoch 35/150
+468/468 - 147s - loss: 0.3314 - accuracy: 0.8851 - val_loss: 0.3421 - val_accuracy: 0.8827
+Epoch 36/150
+468/468 - 147s - loss: 0.3390 - accuracy: 0.8833 - val_loss: 0.3524 - val_accuracy: 0.8737
+Epoch 37/150
+468/468 - 147s - loss: 0.3340 - accuracy: 0.8849 - val_loss: 0.3747 - val_accuracy: 0.8603
+Epoch 38/150
+468/468 - 147s - loss: 0.3307 - accuracy: 0.8837 - val_loss: 0.4020 - val_accuracy: 0.8637
+Epoch 39/150
+468/468 - 147s - loss: 0.3165 - accuracy: 0.8920 - val_loss: 0.5394 - val_accuracy: 0.8197
+Epoch 40/150
+468/468 - 147s - loss: 0.3166 - accuracy: 0.8912 - val_loss: 0.3670 - val_accuracy: 0.8773
+Epoch 41/150
+468/468 - 147s - loss: 0.3110 - accuracy: 0.8919 - val_loss: 0.5412 - val_accuracy: 0.8197
+Epoch 42/150
+468/468 - 147s - loss: 0.3084 - accuracy: 0.8909 - val_loss: 0.3465 - val_accuracy: 0.8827
+
+Epoch 00042: ReduceLROnPlateau reducing learning rate to 0.001.
+Epoch 43/150
+468/468 - 147s - loss: 0.3024 - accuracy: 0.8963 - val_loss: 0.3912 - val_accuracy: 0.8760
+Epoch 44/150
+468/468 - 147s - loss: 0.2928 - accuracy: 0.8975 - val_loss: 0.3480 - val_accuracy: 0.8787
+Epoch 45/150
+468/468 - 147s - loss: 0.2909 - accuracy: 0.8985 - val_loss: 0.3560 - val_accuracy: 0.8757
+```
+
+5. Training & Validation accuracy
+
+![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/Intel/Picture/Training%20%26%20Validation%20accuracy.png)
+
+6. Training & Validation loss
+
+![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/Intel/Picture/Training%20%26%20Validation%20loss.png)
+
+7. Use **pre_df** these new pictures to predict, to check model's accuracy, and make **Confusion_Matrix** 
+
+![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/Intel/Picture/Confusion_Matrix.jpg)
+
+ps : "預測" = "Prediction" ; "真實" = "Real"
+
+8. Search relate picture URL and test this model's accuracy
+
+![ ](https://raw.githubusercontent.com/ahoucbvtw/CNN-Kaggle-Pratice/main/Intel/Picture/URL_Test.jpg)
+
+
+[Top](https://github.com/ahoucbvtw/CNN-Kaggle-Pratice#cnn-kaggle-pratice)
