@@ -67,7 +67,6 @@ test_generator = test_datagen.flow_from_directory(
 8. Training
 ```
 Epoch 1/300
-WARNING:tensorflow:Callbacks method `on_train_batch_end` is slow compared to the batch time (batch time: 0.2497s vs `on_train_batch_end` time: 0.5254s). Check your callbacks.
 435/435 - 348s - loss: 1.1557 - accuracy: 0.5107 - val_loss: 1.0722 - val_accuracy: 0.5424
 Epoch 2/300
 435/435 - 341s - loss: 1.0299 - accuracy: 0.5760 - val_loss: 0.9980 - val_accuracy: 0.5787
@@ -276,7 +275,6 @@ _________________________________________________________________
 7. Training
 ```
 Epoch 1/150
-WARNING:tensorflow:Callbacks method `on_train_batch_end` is slow compared to the batch time (batch time: 0.1186s vs `on_train_batch_end` time: 0.2565s). Check your callbacks.
 570/570 - 372s - loss: 1.3247 - accuracy: 0.5091 - val_loss: 5.3865 - val_accuracy: 0.1916
 Epoch 2/150
 570/570 - 359s - loss: 0.4325 - accuracy: 0.8557 - val_loss: 2.5981 - val_accuracy: 0.4526
